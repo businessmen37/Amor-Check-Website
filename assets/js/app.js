@@ -48,8 +48,9 @@
   document.addEventListener('click',e=>{if(!e.target.closest('.nav-actions')){languageMenu.hidden=true;$('#languageBtn').setAttribute('aria-expanded','false');}});
 
   const menuToggle=$('#menuToggle'), mobileMenu=$('#mobileMenu');
-  menuToggle.addEventListener('click',()=>{mobileMenu.hidden=!mobileMenu.hidden;menuToggle.setAttribute('aria-expanded',String(!mobileMenu.hidden));});
-  $$('#mobileMenu a').forEach(a=>a.addEventListener('click',()=>{mobileMenu.hidden=true;menuToggle.setAttribute('aria-expanded','false');}));
+  menuToggle.addEventListener('click',()=>{const open=!mobileMenu.classList.contains('is-open');mobileMenu.classList.toggle('is-open',open);menuToggle.setAttribute('aria-expanded',String(open));});
+  $$('#mobileMenu a').forEach(a=>a.addEventListener('click',()=>{mobileMenu.classList.remove('is-open');menuToggle.setAttribute('aria-expanded','false');}));
+  window.addEventListener('resize',()=>{if(window.innerWidth>980){mobileMenu.classList.remove('is-open');menuToggle.setAttribute('aria-expanded','false');}});
 
   const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target);}}),{threshold:.12});
   $$('.reveal').forEach(el=>observer.observe(el));
